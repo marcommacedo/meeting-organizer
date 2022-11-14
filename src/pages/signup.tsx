@@ -1,5 +1,5 @@
-import AuthSignIn from "../components/auth/AuthSignIn"
+import AuthSignIn from "../components/auth/AuthSign";
 
 export default function SignUp() {
-  return <AuthSignIn mode="singup" />
+  return <AuthSignIn mode="up" />;
 }

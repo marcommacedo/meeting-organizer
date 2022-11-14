@@ -9,14 +9,23 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onIdTokenChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  sendPasswordResetEmail,
 } from "firebase/auth"
 import { useRouter } from "next/router"
 
 interface IAuthContext {
   user?: User
   loading?: boolean
-  signIn?: (email: string, password: string) => Promise<void>
+  signIn?: (
+    email: string,
+    password: string,
+    rememberMe: boolean
+  ) => Promise<void>
   signUp?: (email: string, password: string) => Promise<void>
+  signInGoogle?: () => Promise<void>
+  forgotPassword?: (email: string) => Promise<void>
   logout?: () => Promise<void>
 }
 
@@ -40,10 +49,13 @@ export function AuthProvider(props: any) {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<User>()
 
-  const manageCookie = async (logged: boolean) => {
+  const manageCookie = async (logged: boolean, rememberMe?: boolean) => {
     if (logged) {
       setCookie("meeting-organizer-auth", logged, {
-        maxAge: 604.8,
+        expires: rememberMe
+          ? new Date(Date.now() + 12096e5)
+          : new Date(Date.now() + 36000),
+        sameSite: true,
       })
     } else {
       removeCookie("meeting-organizer-auth")
@@ -66,15 +78,28 @@ export function AuthProvider(props: any) {
     }
   }
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (
+    email: string,
+    password: string,
+    rememberMe: boolean
+  ) => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, password)
       await configSession(res.user)
-      await manageCookie(true)
+      await manageCookie(true, rememberMe)
       router.push("/")
     } finally {
       setLoading(false)
     }
+  }
+
+  const signInGoogle = async () => {
+    const provider = new GoogleAuthProvider()
+    provider.setCustomParameters({ prompt: "select_account" })
+    const res = await signInWithPopup(auth, provider)
+    await configSession(res.user)
+    await manageCookie(true, true)
+    router.push("/")
   }
 
   const signUp = async (email: string, password: string) => {
@@ -85,6 +110,14 @@ export function AuthProvider(props: any) {
       router.push("/")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const forgotPassword = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email)
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -109,7 +142,17 @@ export function AuthProvider(props: any) {
   }, [auth, cookies])
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        signIn,
+        signUp,
+        signInGoogle,
+        forgotPassword,
+        logout,
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   )

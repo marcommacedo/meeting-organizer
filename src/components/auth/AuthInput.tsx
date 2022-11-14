@@ -10,7 +10,7 @@ interface AuthInputProps {
 
 export default function AuthInput(props: AuthInputProps) {
   return (
-    <div className="flex flex-col mt-4">
+    <div className="flex flex-col mt-4 mb-2">
       <label htmlFor={props.id}>{props.label}</label>
       <input
         id={props.id}

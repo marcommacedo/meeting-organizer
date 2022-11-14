@@ -1,9 +1,5 @@
-import AuthSignIn from "../components/auth/AuthSignIn"
+import AuthSignIn from "../components/auth/AuthSign";
 
 export default function SignIn() {
-  return (
-    <div className="flex items-center justify-center h-screen">
-      <AuthSignIn mode="signin" />
-    </div>
-  )
+  return <AuthSignIn mode="in" />;
 }
