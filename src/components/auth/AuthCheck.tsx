@@ -1,5 +1,6 @@
-import Head from "next/head"
+import styles from "../../styles/AuthCheck.module.css"
 import { useRouter } from "next/router"
+import Script from "next/script"
 import useAuth from "../../data/hook/useAuth"
 
 export default function AuthCheck(props: any) {
@@ -9,17 +10,16 @@ export default function AuthCheck(props: any) {
   function renderContent() {
     return (
       <>
-        <Head>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
+        <Script
+          id="scriptCheckAuth"
+          dangerouslySetInnerHTML={{
+            __html: `
                     if(!document.cookie?.includes("meeting-organizer-auth")) {
                         window.location.href = "/signin"
                     }
                 `,
-            }}
-          />
-        </Head>
+          }}
+        />
         {props.children}
       </>
     )
@@ -27,8 +27,11 @@ export default function AuthCheck(props: any) {
 
   function renderLoading() {
     return (
-      <div>
-        <div>Loading</div>
+      <div className="flex h-screen w-screen justify-center items-center">
+        <div className={styles["lds-ripple"]}>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     )
   }

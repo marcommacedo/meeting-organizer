@@ -38,6 +38,7 @@ async function formatUser(userFirebase: userFirebase): Promise<User> {
     name: userFirebase.displayName,
     email: userFirebase.email,
     token,
+    imgUrl: userFirebase.photoURL,
   }
 }
 

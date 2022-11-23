@@ -5,11 +5,12 @@ interface AuthHeaderProps {
   paragraph?: string
   linkName?: string
   linkUrl?: string
+  className?: string
 }
 
 export default function AuthHeader(props: AuthHeaderProps) {
   return (
-    <div>
+    <div className={props.className}>
       <h2>{props.heading}</h2>
       <p>
         {props.paragraph}

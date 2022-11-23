@@ -3,4 +3,5 @@ export default interface User {
   name?: string | null
   email?: string | null
   token?: string
+  imgUrl: string | null
 }

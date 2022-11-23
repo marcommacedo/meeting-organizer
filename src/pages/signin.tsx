@@ -1,5 +1,5 @@
-import AuthSignIn from "../components/auth/AuthSign";
+import AuthSignIn from "../components/auth/AuthSignIn"
 
 export default function SignIn() {
-  return <AuthSignIn mode="in" />;
+  return <AuthSignIn mode="in" />
 }

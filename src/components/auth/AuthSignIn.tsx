@@ -11,9 +11,17 @@ interface AuthProps {
 export default function AuthSignIn(props: AuthProps) {
   const { signIn, signUp, signInGoogle, forgotPassword } = useAuth()
 
+  const [error, setError] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [rememberMe, setRememberMe] = useState(false)
+
+  const showError = (msg: string, time = 5) => {
+    setError(msg)
+    setTimeout(() => {
+      setError("")
+    }, time * 1000)
+  }
 
   const submit = async () => {
     try {
@@ -22,8 +30,8 @@ export default function AuthSignIn(props: AuthProps) {
       } else {
         await signUp?.(email, password)
       }
-    } catch (e) {
-      console.log(e)
+    } catch (e: any) {
+      showError(e?.message! ?? "Unknown error")
     }
   }
 
@@ -44,9 +52,10 @@ export default function AuthSignIn(props: AuthProps) {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="flex flex-col w-1/2">
+    <div className="font-sans bg-gradient-to-r from-gray-900 to-gray-600 flex h-screen justify-center items-center w-screen">
+      <div className="flex flex-col w-3/4 md:w-1/2 lg:w-1/3 bg-white rounded-lg p-4">
         <AuthHeader
+          className="mt-2"
           heading={
             props.mode === "in" ? (
               <Link href="signup">
@@ -57,6 +66,7 @@ export default function AuthSignIn(props: AuthProps) {
             )
           }
         />
+        {error ? error : false}
         <AuthInput
           id="email"
           type="text"
@@ -75,7 +85,7 @@ export default function AuthSignIn(props: AuthProps) {
         />
 
         {props.mode === "in" ? (
-          <div className="flex mt-4 justify-between">
+          <div className="flex mt-4 justify-between text-sm md:text-base">
             <div className="flex items-center">
               <input
                 type="checkbox"
@@ -86,7 +96,7 @@ export default function AuthSignIn(props: AuthProps) {
               />
               <label htmlFor="rememberMe">Stay signed in for 2 weeks</label>
             </div>
-            <Link href={"/"} onClick={resetPassword}>
+            <Link href={"/reset"} onClick={resetPassword}>
               Forgot password?
             </Link>
           </div>
@@ -94,14 +104,9 @@ export default function AuthSignIn(props: AuthProps) {
           false
         )}
 
-        <button
-          onClick={submit}
-          className="bg-red-500 hover:bg-red-400 rounded-lg text-white text-md py-2 mt-4"
-        >
+        <button onClick={submit} className="text-md py-2 mt-4">
           {props.mode === "in" ? "Sign In" : "Sign Up"}
         </button>
-
-        <hr />
 
         <div className="flex justify-center items-center mt-4">
           <button onClick={submitGoogle}>
