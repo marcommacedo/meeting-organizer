@@ -52,8 +52,8 @@ export default function AuthSignIn(props: AuthProps) {
   }
 
   return (
-    <div className="font-sans bg-gradient-to-r from-gray-900 to-gray-600 flex h-screen justify-center items-center w-screen">
-      <div className="flex flex-col w-3/4 md:w-1/2 lg:w-1/3 bg-white rounded-lg p-4">
+    <div className="font-sans bg-gradient-to-r from-gray-800 to-gray-600 flex h-screen justify-center items-center w-screen">
+      <div className="flex flex-col w-6/7 md:w-1/2 lg:w-1/3 bg-white shadow-md shadow-gray-900 rounded-lg p-4">
         <AuthHeader
           className="mt-2"
           heading={

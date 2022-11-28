@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import Maps from "../components/maps/Maps"
 import Layout from "../components/template/Layout"
 import UseDb from "../services/clients.service"
 
@@ -19,12 +20,7 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <h1>Oi</h1>
-        <ul>
-          {clients.map((client: any) => (
-            <li key={client.id}>{client.name}</li>
-          ))}
-        </ul>
+        <Maps />
       </Layout>
     </>
   )

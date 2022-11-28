@@ -10,11 +10,11 @@ export default function Layout(props: ILayout) {
   return props.public ? (
     <>{props.children}</>
   ) : (
-    <div className="flex h-screen w-screen bg-gray-700 text-gray-100">
+    <div className="flex flex-col h-screen w-screen bg-gray-700 text-gray-100">
       <AuthCheck>
         <div className="flex">
           <Sidebar />
-          <>{props.children}</>
+          <div className="flex flex-grow m-4">{props.children}</div>
         </div>
       </AuthCheck>
     </div>
